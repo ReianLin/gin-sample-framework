@@ -1,0 +1,42 @@
+name: test-gin-sample-framework # 项目名
+
+#server
+server:
+  port: 8080
+
+#jwt
+jwt:
+  secret: aaaa # token secret
+  expire: 168 # token expire time (hours)
+
+#jaeger
+jaeger:
+  enabled: true
+  host: localhost
+  port: 6831
+
+#db
+db:
+  mysql:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: 123456
+    dbname: b02-test
+
+#redis
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: 
+  db: 0
+
+#rabbitmq
+rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: guest
+  password: guest
+  vhost: /
+
+
