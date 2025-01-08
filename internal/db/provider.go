@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	globalProvider DBProvider
-	globalKey      struct{}
+	globalProvider      DBProvider
+	GlobalDBProviderKey struct{}
 )
 
 type DBProvider struct {
@@ -27,9 +27,10 @@ func GetGlobalDBProvider() *DBProvider {
 }
 
 func (d *DBProvider) WithDB(ctx context.Context) *gorm.DB {
-	if tx, ok := ctx.Value(globalKey).(*gorm.DB); ok {
+	if tx, ok := ctx.Value(GlobalDBProviderKey).(*gorm.DB); ok {
 		return tx
 	}
+
 	return d.db.WithContext(ctx)
 }
 

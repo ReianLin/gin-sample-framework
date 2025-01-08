@@ -64,7 +64,6 @@ func Auth() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
 func extractSessionID(authHeader string) string {
 	splitToken := strings.Split(authHeader, "Bearer ")
 	if len(splitToken) != 2 {

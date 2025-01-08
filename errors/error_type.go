@@ -6,19 +6,19 @@ const InternalServerError Type = 500
 const Success Type = 200
 const InvalidParams Type = 400
 const (
-	InvalidToken   Type = iota + 1000 // 无效的令牌。
-	TokenExpired                      // 令牌过期。
-	UploadError                       //上传失败
-	NotPermission                     // 没有权限
-	EmptyParameter                    //参数为空
-	BadRequest                        // 请求失败
+	InvalidToken Type = iota + 1000
+	TokenExpired
+	UploadError
+	NotPermission
+	EmptyParameter
+	BadRequest
 	Forbidden
 	NotFound
 	NotImplemented
 	ServiceUnavailable
-	ParameterLengthExceedsLimit //参数长度超过限制
-	NoData                      //未找到有效数据
-	ParameterErr                //参数错误
+	ParameterLengthExceedsLimit
+	NoData
+	ParameterErr
 )
 
 func (t Type) String() string {

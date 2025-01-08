@@ -1,0 +1,594 @@
+basePath: /api/v1
+definitions:
+  entity.Permission:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      name:
+        type: string
+      permission_id:
+        type: integer
+      type:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  entity.Role:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      role_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  model.RoleCreateRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      permission_ids:
+        items:
+          type: integer
+        type: array
+    required:
+    - name
+    - permission_ids
+    type: object
+  model.RoleCreateResponse:
+    properties:
+      role_id:
+        type: integer
+    type: object
+  model.RoleDetailListResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/model.RolePermissionDetailDTO'
+        type: array
+      total:
+        type: integer
+    type: object
+  model.RoleDetailResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/entity.Permission'
+        type: array
+      role_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  model.RolePermissionDetailDTO:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/entity.Permission'
+        type: array
+      role_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  model.RoleUpdateRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      permission_ids:
+        items:
+          type: integer
+        type: array
+      role_id:
+        type: integer
+    required:
+    - permission_ids
+    - role_id
+    type: object
+  model.UserCreateReq:
+    properties:
+      account:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role_ids:
+        items:
+          type: integer
+        type: array
+    required:
+    - account
+    - email
+    - name
+    - password
+    type: object
+  model.UserCreateResp:
+    properties:
+      userId:
+        type: integer
+    type: object
+  model.UserDetailListResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/model.UserRoleDetailDTO'
+        type: array
+      total:
+        type: integer
+    type: object
+  model.UserDetailResp:
+    properties:
+      account:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/entity.Role'
+        type: array
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.UserRoleDetailDTO:
+    properties:
+      account:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/entity.Role'
+        type: array
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.UserUpdateReq:
+    properties:
+      account:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role_ids:
+        items:
+          type: integer
+        type: array
+      user_id:
+        type: integer
+    required:
+    - role_ids
+    - user_id
+    type: object
+  utils.GeneralResponseModel:
+    properties:
+      data: {}
+      message:
+        example: This is message
+        type: string
+      status:
+        example: success
+        type: string
+      statusCode:
+        example: 200
+        type: integer
+      translations: {}
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Gin Sample Framework API
+  version: "1.0"
+paths:
+  /v1/role/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new role
+      parameters:
+      - description: role info
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/model.RoleCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.RoleCreateResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Create Role
+      tags:
+      - Role
+  /v1/role/delete/{role_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete
+      parameters:
+      - description: role_id
+        in: path
+        name: role_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Delete
+      tags:
+      - Role
+  /v1/role/detail/{role_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a role by ID
+      parameters:
+      - description: role_id
+        in: path
+        name: role_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.RoleDetailResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Get Role
+      tags:
+      - Role
+  /v1/role/edit:
+    put:
+      consumes:
+      - application/json
+      description: Edit
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.RoleUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Edit
+      tags:
+      - Role
+  /v1/role/list:
+    get:
+      consumes:
+      - application/json
+      description: List
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.RoleDetailListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: List
+      tags:
+      - Role
+  /v1/test/cat/walk:
+    get:
+      consumes:
+      - application/json
+      description: TestCat
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: TestCat
+      tags:
+      - TestController
+  /v1/test/dog/run:
+    get:
+      consumes:
+      - application/json
+      description: TestDog
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: TestDog
+      tags:
+      - TestController
+  /v1/test/hello:
+    get:
+      consumes:
+      - application/json
+      description: TestHello
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: TestHello
+      tags:
+      - TestController
+  /v1/user/create:
+    post:
+      consumes:
+      - application/json
+      description: UserController
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserCreateResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: UserController
+      tags:
+      - User
+  /v1/user/delete/{user_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Delete
+      tags:
+      - User
+  /v1/user/detail/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserDetailResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Get
+      tags:
+      - User
+  /v1/user/list:
+    get:
+      consumes:
+      - application/json
+      description: GetUserList
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserDetailListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: GetUserList
+      tags:
+      - User
+  /v1/user/update:
+    put:
+      consumes:
+      - application/json
+      description: Update
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Update
+      tags:
+      - User
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

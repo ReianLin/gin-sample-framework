@@ -2,7 +2,9 @@ package main
 
 import (
 	"gin-sample-framework/config"
+	_ "gin-sample-framework/docs"
 	"gin-sample-framework/internal/db"
+	"gin-sample-framework/internal/entity"
 	"gin-sample-framework/internal/server"
 	"gin-sample-framework/pkg/logger"
 	"gin-sample-framework/pkg/trace"
@@ -16,6 +18,23 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/plugin/dbresolver"
 )
+
+// @title           Gin Sample Framework API
+// @version         1.0
+// @description     This is a sample server.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.swagger.io/support
+// @contact.email  support@swagger.io
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @securityDefinitions.basic  BasicAuth
 
 func main() {
 
@@ -51,6 +70,8 @@ func main() {
 		logs.Error("failed to connect to database", zap.Error(err))
 		panic(err)
 	}
+
+	db.GetGlobalDBProvider().DB().AutoMigrate(&entity.User{}, &entity.Role{}, &entity.UserRole{}, &entity.Permission{}, &entity.RolePermission{})
 
 	// init tracer
 	var tracer opentracing.Tracer

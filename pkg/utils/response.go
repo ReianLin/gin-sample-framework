@@ -13,7 +13,7 @@ type GeneralPaginationModel struct {
 	TotalCount   int `json:"total_count"`
 }
 
-type GeneralReponseModel struct {
+type GeneralResponseModel struct {
 	StatusCode   int         `json:"statusCode" example:"200"`
 	Data         interface{} `json:"data"`
 	Status       string      `json:"status" example:"success"`

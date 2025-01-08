@@ -16,13 +16,13 @@ func HasPermission() gin.HandlerFunc {
 			prefix    = "/api"
 		)
 		if fuallPath == "" {
-			c.AbortWithStatusJSON(http.StatusNotFound, H(errors.NotFound, nil, errors.NotFound.String()))
+			c.AbortWithStatusJSON(http.StatusBadRequest, H(errors.BadRequest, nil, errors.BadRequest.String()))
 			return
 		}
 		result := strings.TrimPrefix(fuallPath, prefix)
 		router := extractBeforeSecondSlash(result)
 		if len(router) == 0 {
-			c.AbortWithStatusJSON(http.StatusNotFound, H(errors.NotFound, nil, errors.NotFound.String()))
+			c.AbortWithStatusJSON(http.StatusBadRequest, H(errors.BadRequest, nil, errors.BadRequest.String()))
 			return
 		}
 
@@ -50,6 +50,7 @@ func HasPermission() gin.HandlerFunc {
 			}
 		}
 		c.Next()
+
 	}
 }
 

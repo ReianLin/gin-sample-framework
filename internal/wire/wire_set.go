@@ -19,11 +19,6 @@ var (
 		service.NewUserService,
 	)
 
-	HelloServiceSet = wire.NewSet(
-		repository.NewHelloRepository,
-		service.NewHelloService,
-	)
-
 	RoleServiceSet = wire.NewSet(
 		repository.NewRoleRepository,
 		service.NewRoleService,

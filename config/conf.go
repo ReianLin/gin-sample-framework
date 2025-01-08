@@ -14,6 +14,10 @@ type Config struct {
 	Name string `json:"name" yaml:"name"`
 	Env  string `json:"env" yaml:"env" `
 
+	Server struct {
+		Port int `json:"port" yaml:"port"`
+	} `json:"server" yaml:"server"`
+
 	Jwt struct {
 		Secret string `json:"secret" yaml:"secret" mapstructure:"secret"`
 		Expire int    `json:"expire" yaml:"expire" mapstructure:"expire"`
