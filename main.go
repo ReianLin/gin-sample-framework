@@ -29,7 +29,8 @@ func main() {
 	}
 
 	// init logger
-	logger := logger.NewZapLogger(zapcore.InfoLevel)
+	logs := logger.NewZapLogger(zapcore.InfoLevel)
+	logger.SetGlobalLogger(logs)
 
 	// init db
 	var (
@@ -47,7 +48,7 @@ func main() {
 				Replicas: []gorm.Dialector{dbConfig.Dialector()},
 			}))
 	}); err != nil {
-		logger.Error("failed to connect to database", zap.Error(err))
+		logs.Error("failed to connect to database", zap.Error(err))
 		panic(err)
 	}
 
@@ -60,7 +61,7 @@ func main() {
 		cfg.AgentPort = config.Configuration.Jaeger.Port
 		t, closer, err := trace.NewTracer(cfg)
 		if err != nil {
-			logger.Error("failed to create tracer", zap.Error(err))
+			logs.Error("failed to create tracer", zap.Error(err))
 			panic(err)
 		}
 		tracer = t
@@ -68,10 +69,10 @@ func main() {
 	}
 
 	//init server
-	if server := server.NewServer(logger, tracer); server != nil {
+	if server := server.NewServer(logs, tracer); server != nil {
 		go func() {
 			if err := server.Run(); err != nil {
-				logger.Error("failed to run server", zap.Error(err))
+				logs.Error("failed to run server", zap.Error(err))
 				panic(err)
 			}
 		}()

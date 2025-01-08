@@ -2,6 +2,18 @@ package logger
 
 import "context"
 
+var (
+	globalLogger Logger
+)
+
+func SetGlobalLogger(logger Logger) {
+	globalLogger = logger
+}
+
+func GetGlobalLogger() Logger {
+	return globalLogger
+}
+
 type Fields map[string]interface{}
 
 type Logger interface {

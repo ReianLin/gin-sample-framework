@@ -30,8 +30,8 @@ func NewServer(
 
 func (s *Server) Run() error {
 	gin.SetMode(gin.DebugMode)
-	s.InitRoutes()
 	s.InitMiddleware()
+	s.InitRoutes()
 	return s.engine.Run(":8080")
 }
 
@@ -52,9 +52,9 @@ type IRouter interface {
 
 func (s *Server) InitRoutes() {
 	var routers = []IRouter{
-		wire.BuildHelloController(s.logger),
-		wire.BuildDogController(s.logger),
-		wire.BuildCatController(s.logger),
+		wire.BuildHelloController(),
+		wire.BuildDogController(),
+		wire.BuildCatController(),
 	}
 	for _, router := range routers {
 		router.Init(s.engine.Group("/api/v1"))

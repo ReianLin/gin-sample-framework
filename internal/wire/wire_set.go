@@ -8,16 +8,24 @@ import (
 	"github.com/google/wire"
 )
 
+var DBProviderSet = wire.NewSet(
+	db.GetGlobalDBProvider,
+)
+
 var (
 	UserServiceSet = wire.NewSet(
-		db.GetGlobalDBProvider,
 		repository.NewUserRepository,
+		RoleServiceSet,
 		service.NewUserService,
 	)
 
 	HelloServiceSet = wire.NewSet(
-		db.GetGlobalDBProvider,
 		repository.NewHelloRepository,
 		service.NewHelloService,
+	)
+
+	RoleServiceSet = wire.NewSet(
+		repository.NewRoleRepository,
+		service.NewRoleService,
 	)
 )

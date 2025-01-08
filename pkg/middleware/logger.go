@@ -19,7 +19,7 @@ func Logger(log logger.Logger) gin.HandlerFunc {
 		end := time.Now()
 		latency := end.Sub(start)
 
-		log.WithContext(c.Request.Context()).WithFields(logger.Fields{
+		log.WithFields(logger.Fields{
 			"path":       path,
 			"query":      query,
 			"ip":         c.ClientIP(),

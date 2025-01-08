@@ -1,12 +1,28 @@
 package auth
 
 import (
+	"context"
 	"gin-sample-framework/config"
 	"gin-sample-framework/pkg/utils"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
+
+type Token struct {
+	UserId   int
+	UserRole string
+}
+
+var tokenDataKey struct{}
+
+func GetTokenData[T Token](ctx context.Context) T {
+	return ctx.Value(tokenDataKey).(T)
+}
+
+func SetTokenData[T Token](ctx context.Context, data T) context.Context {
+	return context.WithValue(ctx, tokenDataKey, data)
+}
 
 // Generate Token String
 func GenerateTokenString(user_id int, user_role string) (string, error) {

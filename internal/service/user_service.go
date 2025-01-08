@@ -6,32 +6,36 @@ import (
 	"gin-sample-framework/internal/model/entity"
 	"gin-sample-framework/internal/repository"
 	"gin-sample-framework/pkg/logger"
-
-	"go.uber.org/zap"
 )
 
 type UserService struct {
-	logger   logger.Logger
-	userRepo *repository.UserRepository
+	logger      logger.Logger
+	userRepo    *repository.UserRepository
+	roleService *RoleService
 }
 
-func NewUserService(logger logger.Logger, userRepo *repository.UserRepository) *UserService {
+func NewUserService(logger logger.Logger, userRepo *repository.UserRepository, roleService *RoleService) *UserService {
 	return &UserService{
-		userRepo: userRepo,
-		logger:   logger,
+		userRepo:    userRepo,
+		roleService: roleService,
+		logger:      logger,
 	}
 }
 
-func (s *UserService) CreateUser(ctx context.Context, user model.UserCreateReq) (resp model.UserCreateResp, err error) {
-	s.logger.Info("user create", zap.Any("user", user))
+func (s *UserService) Create(ctx context.Context, user model.UserCreateRequest) (resp model.UserResponse, err error) {
 	userEntity := &entity.User{
 		Username: user.Username,
 		Password: user.Password,
 	}
-	err = s.userRepo.Create(ctx, userEntity)
+	err = s.userRepo.Create(ctx, userEntity, user.RoleIDs)
 	if err != nil {
 		return resp, err
 	}
-	resp.UserId = userEntity.ID
+	resp.UserID = userEntity.UserID
 	return resp, nil
+}
+
+func (s *UserService) GetAll(ctx context.Context) (users []*entity.User, err error) {
+	users, err = s.userRepo.List(ctx)
+	return
 }

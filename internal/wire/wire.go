@@ -11,32 +11,37 @@ import (
 	"github.com/google/wire"
 )
 
-// Animal 相关的依赖注入，保留接口
-func BuildDogController(logger logger.Logger) *controller.DogController {
+func BuildDogController() *controller.DogController {
 	panic(wire.Build(
+		logger.GetGlobalLogger,
 		service.NewDogService,
 		wire.Bind(new(service.IAnimalService), new(*service.DogService)),
 		controller.NewDogController,
 	))
 }
 
-func BuildCatController(logger logger.Logger) *controller.CatController {
+func BuildCatController() *controller.CatController {
 	panic(wire.Build(
+		logger.GetGlobalLogger,
 		service.NewCatService,
 		wire.Bind(new(service.IAnimalService), new(*service.CatService)),
 		controller.NewCatController,
 	))
 }
 
-func BuildHelloController(logger logger.Logger) *controller.HelloController {
+func BuildHelloController() *controller.HelloController {
 	panic(wire.Build(
+		logger.GetGlobalLogger,
+		DBProviderSet,
 		HelloServiceSet,
 		controller.NewHelloController,
 	))
 }
 
-func BuildUserController(logger logger.Logger) *controller.UserController {
+func BuildUserController() *controller.UserController {
 	panic(wire.Build(
+		logger.GetGlobalLogger,
+		DBProviderSet,
 		UserServiceSet,
 		controller.NewUserController,
 	))

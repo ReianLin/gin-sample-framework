@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gin-sample-framework/config"
 	"gin-sample-framework/errors"
-	"gin-sample-framework/internal/model"
+	"gin-sample-framework/pkg/auth"
 	"gin-sample-framework/pkg/utils"
 	"net/http"
 	"strings"
@@ -54,13 +54,13 @@ func Auth() gin.HandlerFunc {
 			return
 		}
 		var (
-			out model.Token
+			out auth.Token
 		)
 		if user_role != nil {
 			out.UserRole = user_role.(string)
 		}
 		out.UserId = int(user_id.(float64))
-		c.Request = c.Request.WithContext(model.SetTokenData(c.Request.Context(), out))
+		c.Request = c.Request.WithContext(auth.SetTokenData(c.Request.Context(), out))
 		c.Next()
 	}
 }

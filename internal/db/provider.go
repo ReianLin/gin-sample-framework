@@ -27,8 +27,7 @@ func GetGlobalDBProvider() *DBProvider {
 }
 
 func (d *DBProvider) WithDB(ctx context.Context) *gorm.DB {
-	tx, ok := ctx.Value(globalKey).(*gorm.DB)
-	if ok {
+	if tx, ok := ctx.Value(globalKey).(*gorm.DB); ok {
 		return tx
 	}
 	return d.db.WithContext(ctx)
@@ -48,8 +47,7 @@ type MysqlConfig struct {
 
 func (m *MysqlConfig) Dialector() gorm.Dialector {
 	return mysql.Open(fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=true",
-		m.Username, m.Password, m.Host, m.Port, m.DBName,
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=true", m.Username, m.Password, m.Host, m.Port, m.DBName,
 	))
 }
 
