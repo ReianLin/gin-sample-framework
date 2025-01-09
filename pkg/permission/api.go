@@ -41,7 +41,7 @@ type controllerPermission struct {
 	RoutePerm map[string][]*RoutePerm `json:"func_permissions"`
 }
 
-func NewRoutePerm(route, method string, perm ApiPermissions, handle ...gin.HandlerFunc) RoutePermHandle {
+func NewPerm(route, method string, perm ApiPermissions, handle ...gin.HandlerFunc) RoutePermHandle {
 	return RoutePermHandle{
 		RoutePerm: &RoutePerm{Router: route,
 			Method:      method,

@@ -1,5 +1,7 @@
 package permission
 
+import "strings"
+
 var Permission = &permission{perm: make(map[string]*controllerPermission)}
 
 type permission struct {
@@ -7,7 +9,7 @@ type permission struct {
 }
 
 func (p *permission) MakeGroup(route, name string) *controllerPermission {
-	//route := group.BasePath()
+	route = "/" + strings.ReplaceAll(route, "/", "/")
 	if c, ok := Permission.perm[route]; ok {
 		return c
 	}

@@ -226,7 +226,7 @@ info:
   title: Gin Sample Framework API
   version: "1.0"
 paths:
-  /v1/role/create:
+  /v1/system/role/create:
     post:
       consumes:
       - application/json
@@ -257,7 +257,7 @@ paths:
       summary: Create Role
       tags:
       - Role
-  /v1/role/delete/{role_id}:
+  /v1/system/role/delete/{role_id}:
     delete:
       consumes:
       - application/json
@@ -282,7 +282,7 @@ paths:
       summary: Delete
       tags:
       - Role
-  /v1/role/detail/{role_id}:
+  /v1/system/role/detail/{role_id}:
     get:
       consumes:
       - application/json
@@ -312,7 +312,7 @@ paths:
       summary: Get Role
       tags:
       - Role
-  /v1/role/edit:
+  /v1/system/role/edit:
     put:
       consumes:
       - application/json
@@ -338,7 +338,7 @@ paths:
       summary: Edit
       tags:
       - Role
-  /v1/role/list:
+  /v1/system/role/list:
     get:
       consumes:
       - application/json
@@ -371,6 +371,151 @@ paths:
       summary: List
       tags:
       - Role
+  /v1/system/user/create:
+    post:
+      consumes:
+      - application/json
+      description: UserController
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserCreateResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: UserController
+      tags:
+      - User
+  /v1/system/user/delete/{user_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Delete
+      tags:
+      - User
+  /v1/system/user/detail/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserDetailResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Get
+      tags:
+      - User
+  /v1/system/user/list:
+    get:
+      consumes:
+      - application/json
+      description: GetUserList
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.GeneralResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserDetailListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: GetUserList
+      tags:
+      - User
+  /v1/system/user/update:
+    put:
+      consumes:
+      - application/json
+      description: Update
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.GeneralResponseModel'
+      summary: Update
+      tags:
+      - User
   /v1/test/cat/walk:
     get:
       consumes:
@@ -443,151 +588,6 @@ paths:
       summary: TestHello
       tags:
       - TestController
-  /v1/user/create:
-    post:
-      consumes:
-      - application/json
-      description: UserController
-      parameters:
-      - description: user
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.UserCreateReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: response
-          schema:
-            allOf:
-            - $ref: '#/definitions/utils.GeneralResponseModel'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.UserCreateResp'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.GeneralResponseModel'
-      summary: UserController
-      tags:
-      - User
-  /v1/user/delete/{user_id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete
-      parameters:
-      - description: user_id
-        in: path
-        name: user_id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: response
-          schema:
-            $ref: '#/definitions/utils.GeneralResponseModel'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.GeneralResponseModel'
-      summary: Delete
-      tags:
-      - User
-  /v1/user/detail/{user_id}:
-    get:
-      consumes:
-      - application/json
-      description: Get
-      parameters:
-      - description: user_id
-        in: path
-        name: user_id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: response
-          schema:
-            allOf:
-            - $ref: '#/definitions/utils.GeneralResponseModel'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.UserDetailResp'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.GeneralResponseModel'
-      summary: Get
-      tags:
-      - User
-  /v1/user/list:
-    get:
-      consumes:
-      - application/json
-      description: GetUserList
-      parameters:
-      - description: page
-        in: query
-        name: page
-        type: integer
-      - description: limit
-        in: query
-        name: limit
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: response
-          schema:
-            allOf:
-            - $ref: '#/definitions/utils.GeneralResponseModel'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.UserDetailListResponse'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.GeneralResponseModel'
-      summary: GetUserList
-      tags:
-      - User
-  /v1/user/update:
-    put:
-      consumes:
-      - application/json
-      description: Update
-      parameters:
-      - description: user
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.UserUpdateReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: response
-          schema:
-            $ref: '#/definitions/utils.GeneralResponseModel'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.GeneralResponseModel'
-      summary: Update
-      tags:
-      - User
 securityDefinitions:
   BasicAuth:
     type: basic

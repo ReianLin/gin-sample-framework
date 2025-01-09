@@ -13,7 +13,7 @@ func HasPermission() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var (
 			fuallPath = c.FullPath()
-			prefix    = "/api"
+			prefix    = "/api/v1"
 		)
 		if fuallPath == "" {
 			c.AbortWithStatusJSON(http.StatusBadRequest, H(errors.BadRequest, nil, errors.BadRequest.String()))
@@ -27,7 +27,7 @@ func HasPermission() gin.HandlerFunc {
 		}
 
 		if per := permission.Permission.GetGroup(router); per != nil {
-			child, ok := per.RoutePerm[strings.TrimPrefix(result, router)]
+			child, ok := per.RoutePerm[strings.TrimPrefix(result, result)]
 			if !ok {
 				c.AbortWithStatusJSON(http.StatusOK, H(errors.NotPermission, nil, errors.NotPermission.String()))
 				return

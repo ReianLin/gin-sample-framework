@@ -4,8 +4,6 @@ import (
 	"gin-sample-framework/internal/model"
 	"gin-sample-framework/internal/service"
 	"gin-sample-framework/pkg/logger"
-	"gin-sample-framework/pkg/permission"
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -19,27 +17,9 @@ type RoleController struct {
 
 func NewRoleController(logger logger.Logger, roleService *service.RoleService) *RoleController {
 	return &RoleController{
-		baseController: baseController{
-			Menu: menu{
-				Name:  "role",
-				Route: "/role",
-			},
-		},
 		logger:      logger,
 		roleService: roleService,
 	}
-}
-
-func (ctrl *RoleController) Init(r *gin.RouterGroup) {
-	model.AppendMenuResourcesList("", "", ctrl.Menu.Name, ctrl.Menu.Route, permission.Create, permission.Delete, permission.Update, permission.Read)
-	group := r.Group(ctrl.Menu.Route)
-	permission.Permission.MakeGroup(ctrl.Menu.Route, ctrl.Menu.Name).Append(group,
-		permission.NewRoutePerm("/create", http.MethodPost, permission.Create, ctrl.Create),
-		permission.NewRoutePerm("/detail/:role_id", http.MethodGet, permission.Read, ctrl.Detail),
-		permission.NewRoutePerm("/edit", http.MethodPut, permission.Update, ctrl.Edit),
-		permission.NewRoutePerm("/delete/:role_id", http.MethodDelete, permission.Delete, ctrl.Delete),
-		permission.NewRoutePerm("/list", http.MethodGet, permission.Read, ctrl.List),
-	)
 }
 
 // Create RoleController
@@ -51,7 +31,7 @@ func (ctrl *RoleController) Init(r *gin.RouterGroup) {
 // @Param        role  body  model.RoleCreateRequest  true  "role info"
 // @Success      200  {object}  utils.GeneralResponseModel{data=model.RoleCreateResponse}
 // @Failure      400  {object}  utils.GeneralResponseModel
-// @Router       /v1/role/create [post]
+// @Router       /v1/system/role/create [post]
 func (ctrl *RoleController) Create(c *gin.Context) {
 	var req model.RoleCreateRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -68,7 +48,7 @@ func (ctrl *RoleController) Create(c *gin.Context) {
 	ctrl.Success(c, resp)
 }
 
-// Get Role
+// Get RoleDeta
 // @Tags         Role
 // @Summary      Get Role
 // @Description  Get a role by ID
@@ -77,7 +57,7 @@ func (ctrl *RoleController) Create(c *gin.Context) {
 // @Param        role_id  path  int  true  "role_id"
 // @Success      200  {object}  utils.GeneralResponseModel{data=model.RoleDetailResponse}  "response"
 // @Failure      400  {object}  utils.GeneralResponseModel
-// @Router       /v1/role/detail/{role_id} [get]
+// @Router       /v1/system/role/detail/{role_id} [get]
 func (ctrl *RoleController) Detail(c *gin.Context) {
 	roleID, err := strconv.Atoi(c.Param("role_id"))
 	if err != nil {
@@ -103,7 +83,7 @@ func (ctrl *RoleController) Detail(c *gin.Context) {
 // @Param        request  body  model.RoleUpdateRequest  true  "request"
 // @Success      200  {object}  utils.GeneralResponseModel  "response"
 // @Failure      400  {object}  utils.GeneralResponseModel
-// @Router       /v1/role/edit [put]
+// @Router       /v1/system/role/edit [put]
 func (ctrl *RoleController) Edit(c *gin.Context) {
 	var req model.RoleUpdateRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -128,7 +108,7 @@ func (ctrl *RoleController) Edit(c *gin.Context) {
 // @Param        role_id  path  int  true  "role_id"
 // @Success      200  {object}  utils.GeneralResponseModel  "response"
 // @Failure      400  {object}  utils.GeneralResponseModel
-// @Router       /v1/role/delete/{role_id} [delete]
+// @Router       /v1/system/role/delete/{role_id} [delete]
 func (ctrl *RoleController) Delete(c *gin.Context) {
 	roleID, err := strconv.Atoi(c.Param("role_id"))
 	if err != nil {
@@ -154,7 +134,7 @@ func (ctrl *RoleController) Delete(c *gin.Context) {
 // @Param        limit  query  int  false  "limit"
 // @Success      200  {object}  utils.GeneralResponseModel{data=model.RoleDetailListResponse}  "response"
 // @Failure      400  {object}  utils.GeneralResponseModel
-// @Router       /v1/role/list [get]
+// @Router       /v1/system/role/list [get]
 func (ctrl *RoleController) List(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	limit, _ := strconv.Atoi(c.Query("limit"))

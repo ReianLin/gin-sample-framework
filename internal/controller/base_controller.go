@@ -6,13 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type menu struct {
-	Name  string
-	Route string
-}
-
 type baseController struct {
-	Menu menu
 }
 
 func (b *baseController) Success(c *gin.Context, data interface{}) {

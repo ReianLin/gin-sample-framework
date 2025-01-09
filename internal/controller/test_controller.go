@@ -2,11 +2,9 @@ package controller
 
 import (
 	"context"
-	"gin-sample-framework/internal/model"
 	"gin-sample-framework/internal/repository"
 	"gin-sample-framework/internal/service"
 	"gin-sample-framework/pkg/logger"
-	"gin-sample-framework/pkg/permission"
 	"gin-sample-framework/pkg/trace"
 	"net/http"
 	"time"
@@ -29,28 +27,11 @@ func NewTestController(
 	dogService service.IAnimalService,
 ) *TestController {
 	return &TestController{
-		baseController: baseController{
-			Menu: menu{
-				Name:  "Test",
-				Route: "/test",
-			},
-		},
 		logger:     logger,
 		testRepo:   testRepo,
 		catService: catService,
 		dogService: dogService,
 	}
-}
-
-func (ctrl *TestController) Init(r *gin.RouterGroup) {
-	model.AppendMenuResourcesList("", "", ctrl.Menu.Name, ctrl.Menu.Route, permission.Create, permission.Delete, permission.Update, permission.Read)
-	group := r.Group(ctrl.Menu.Route)
-	permission.Permission.MakeGroup(ctrl.Menu.Route, ctrl.Menu.Name).Append(group,
-		permission.NewRoutePerm("/hello", http.MethodGet, permission.Read, ctrl.Hello),
-		permission.NewRoutePerm("/cat/walk", http.MethodGet, permission.Read, ctrl.Walk),
-		permission.NewRoutePerm("/dog/run", http.MethodGet, permission.Read, ctrl.Run),
-	)
-
 }
 
 // Hello TestHello
